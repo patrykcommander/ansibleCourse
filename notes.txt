@@ -1,0 +1,5 @@
+09.02.2023
+
+Linux user creation - command useradd -m -d /home/directory -s /bin/bash (shell for the user) userName
+
+
