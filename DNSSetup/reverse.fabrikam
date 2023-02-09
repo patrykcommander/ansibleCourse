@@ -1,0 +1,13 @@
+$TTL 86400
+@   IN  SOA     masterdns.unixmen.local. root.unixmen.local. (
+        2011071001  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+       IN  NS          Centos.fabrikam.com.
+
+11     IN  PTR         Centos.fabrikam.com
+12     IN  PTR         Ubuntu.fabrikam.com.
+10     IN  PTR         WinServ1.fabrikam.com.

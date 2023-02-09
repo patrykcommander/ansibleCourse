@@ -1,0 +1,13 @@
+$TTL 86400
+@   IN  SOA     Centos.fabrikam.com. Centos.fabrikam.com. (
+        2011071001  ;Serial
+        3600        ;Refresh
+        1800        ;Retry
+        604800      ;Expire
+        86400       ;Minimum TTL
+)
+@       IN  NS          Centos.fabrikam.com
+
+Centos          IN  A   192.168.0.11
+Ubuntu          IN  A   192.168.0.12
+WinServ1        IN  A   192.168.0.10
