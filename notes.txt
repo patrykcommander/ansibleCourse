@@ -6,3 +6,5 @@ Linux user creation - command useradd -m -d /home/directory -s /bin/bash (shell 
 
 While establishing ssh connection using the key-pair, by default only the keys which are named like "id_*"
 are taken into account. Otherwise the -i (input) file has to be specified.
+
+ansible module -m gather_facts -> both for Linux and Windows hosts
