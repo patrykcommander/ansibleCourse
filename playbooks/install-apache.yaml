@@ -1,0 +1,14 @@
+---
+
+- hosts: linux
+  become: true
+  tasks:
+  
+  - name: update repository index
+    ansible.builtin.yum:
+      update_cache: yes
+
+  - name: install apache2 package
+    ansible.builtin.yum:
+      name: httpd
+      state: latest

@@ -1,0 +1,12 @@
+---
+
+- hosts: windows
+  gather_facts: yes
+  tasks:
+    - name: test
+      community.windows.psexec:
+        hostname: WinServ1
+        connection_username: ansible
+        connection_password: ansible
+        executable: powershell.exe
+        arguments: whoami

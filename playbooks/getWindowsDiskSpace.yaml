@@ -1,0 +1,7 @@
+---
+- hosts: windows
+
+  tasks:
+    - name: get-freeDiskSpace
+      win_shell: |
+         get-volume | select @{n="Size Remaining [GB]";e={$_.sizeremaining/1GB}}
