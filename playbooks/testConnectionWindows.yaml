@@ -4,9 +4,6 @@
   gather_facts: yes
   tasks:
     - name: test
-      community.windows.psexec:
-        hostname: WinServ1
-        connection_username: ansible
-        connection_password: ansible
-        executable: powershell.exe
-        arguments: whoami
+      win_file:
+        path: c:\temp\test.txt
+        state: touch

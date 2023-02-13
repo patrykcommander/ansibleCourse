@@ -3,5 +3,7 @@
 
   tasks:
     - name: get-freeDiskSpace
-      win_shell: |
-         get-volume | select @{n="Size Remaining [GB]";e={$_.sizeremaining/1GB}}
+      win_shell: get-volume | select @{n="Size Remaining [GB]";e={$_.sizeremaining/1GB}}
+      register: script_return
+    - debug:
+       msg: "{{ script_return.stdout }}"
