@@ -8,3 +8,11 @@ While establishing ssh connection using the key-pair, by default only the keys w
 are taken into account. Otherwise the -i (input) file has to be specified.
 
 ansible module -m gather_facts -> both for Linux and Windows hosts
+
+----12.02.2023----
+
+ansible <group from host/inventory file = windows> -m win_shell "get-localgroupmember -group Administrators"
+---> runs a remote command in powershell CLI as a local ansible user
+
+ansible linux -m shell -a "cat /etc/group | grep -i adm" --become-user root --ask-become-pass 
+---> runs a remote command in bash CLI as a local root user
