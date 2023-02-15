@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  tasks:
+    - name: get-Distro
+      debug:
+        msg:
+          - "Type of the os {{ inventory_hostname }}: {{ ansible_distribution }}"
+    - name: askWhoami-Centos
+      become: true
+      command: whoami
+      when: ansible_distribution|lower is match(".*centos.*")
+    - name: askWhoami-Windows
+      win_shell: whoami
+      when: ansible_distribution|lower is match(".*windows.*")
+      
