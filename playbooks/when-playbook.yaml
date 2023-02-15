@@ -5,12 +5,15 @@
     - name: get-Distro
       debug:
         msg:
-          - "Type of the os {{ inventory_hostname }}: {{ ansible_distribution }}"
+          - "Type of the os {{ inventory_hostname }}: {{ ansible_distribution }} "
+
     - name: askWhoami-Centos
       become: true
-      command: whoami
-      when: ansible_distribution|lower is match(".*centos.*")
+      shell: whoami
+      register: script_return
+      when: ansible_distribution|lower is match(".*centos.*") and ansible_distribution_version is match("7.*")
+ 
     - name: askWhoami-Windows
       win_shell: whoami
-      when: ansible_distribution|lower is match(".*windows.*")
-      
+      register:  script_return
+      when: ansible_distribution|lower is match(".*windows.*") 

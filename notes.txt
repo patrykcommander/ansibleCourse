@@ -16,3 +16,8 @@ ansible <group from host/inventory file = windows> -m win_shell "get-localgroupm
 
 ansible linux -m shell -a "cat /etc/group | grep -i adm" --become-user root --ask-become-pass 
 ---> runs a remote command in bash CLI as a local root user
+
+----15.02.2023----
+
+ansible all -m gather_facts | grep ansible_distribution
+
