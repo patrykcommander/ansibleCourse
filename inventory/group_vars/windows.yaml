@@ -1,5 +1,3 @@
----
-[windows:vars]
 ansible_connection: psrp
 ansible_psrp_auth: credssp
 ansible_psrp_operation_timeout: 7
@@ -9,4 +7,4 @@ ansible_become_method: runas
 ansible_user: ansible
 ansible_password: ansible
 ansible_port: 5986
-ansible_winrm_server_cert_validation: ignore
+ansible_psrp_cert_validation: ignore
