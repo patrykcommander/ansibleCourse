@@ -1,0 +1,22 @@
+---
+
+- hosts: web_servers
+  tasks:
+    
+    - name: install apache (CentOS)
+      become: true
+      yum:
+        name: httpd
+        state: latest
+        update_cache: yes
+      register: output1
+      when: ansible_distribution|lower is match(".*centos.*")
+
+- hosts: file_servers
+  tasks:
+
+    - name: install FS-role
+      win_feature:
+        name: 'FS-FileServer'
+      register: output2
+      when: ansible_distribution|lower is match(".*windows.*")

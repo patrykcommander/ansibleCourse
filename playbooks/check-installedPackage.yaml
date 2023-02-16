@@ -1,0 +1,32 @@
+---
+
+- hosts: web_servers
+  tasks:
+
+    - name: check-apache
+      become: true
+      ansible.builtin.yum:
+        list: httpd
+        state: latest
+        update_cache: yes
+      register: command_output1
+      when: ansible_distribution|lower is match(".*centos.*")
+
+    - name: output-CheckApache
+      debug:
+        msg:
+          - "{{ command_output1 }}"
+
+- hosts: file_servers 
+  tasks:
+
+    - name: check-fileServer
+      community.windows.win_feature_info:
+        name: File-Server
+      register: command_output2
+      when: ansible_distribution|lower is match(".*windows.*")
+
+    - name: output-CheckFS
+      debug:
+        msg:
+          - "{{ command_output2 }}"

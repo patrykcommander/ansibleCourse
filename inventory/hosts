@@ -3,3 +3,9 @@ Centos ansible_host=192.168.0.11
 
 [windows]
 WinServ1 ansible_host=192.168.0.10
+
+[web_servers]
+Centos
+
+[file_servers]
+WinServ1

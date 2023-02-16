@@ -21,3 +21,11 @@ ansible linux -m shell -a "cat /etc/group | grep -i adm" --become-user root --as
 
 ansible all -m gather_facts | grep ansible_distribution
 
+
+----16.02.2023----
+
+modules useful for windows features installation: 
+- community.windows.win_feature_info
+- win_feature
+to search for the name of the feature package run the PowerShell command get-windowsfeature | where {$_.name -like "featureName"} | format-list name,displayName,installed
+
