@@ -29,3 +29,19 @@ modules useful for windows features installation:
 - win_feature
 to search for the name of the feature package run the PowerShell command get-windowsfeature | where {$_.name -like "featureName"} | format-list name,displayName,installed
 
+
+----17.02.2023----
+make ubuntu kernel ignore the floppy disk driver
+
+echo "blacklist floppy" | sudo tee /etc/modprobe.d/blacklist-floppy.conf
+sudo rmod floppy
+sudo update-initramfs -u
+
+rmmod - remove module command
+tee - splits the output of the program into two things 
+command -----> tee -------> stdout
+                |
+                |
+                |
+                v
+               file

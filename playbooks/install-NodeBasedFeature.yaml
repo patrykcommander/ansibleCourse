@@ -1,9 +1,27 @@
 ---
 
+- hosts: all
+  pre_tasks:
+    
+    - name: install updates (CentOS)
+      become: true
+      tags: always
+      yum: name=* state=latest update_cache=yes
+      when: ansible_distribution|lower is match(".*centos.*")
+    
+    - name: install updates (Ubuntu)
+      become: true
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution|lower is match(".*ubuntu.*")
+
 - hosts: web_servers
   tasks:
     
     - name: install apache (CentOS)
+      tags: centos, httpd, apache
       become: true
       yum:
         name: httpd
@@ -16,6 +34,7 @@
   tasks:
 
     - name: install FS-role
+      tags: windowsFS
       win_feature:
         name: 'FS-FileServer'
       register: output2
