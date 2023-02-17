@@ -29,6 +29,45 @@
         update_cache: yes
       register: output1
       when: ansible_distribution|lower is match(".*centos.*")
+    
+    - name: change e-mail address for admin
+      become: true
+      tags: centos, httpd, apache
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^ServerAdmin^'
+        line: ServerAdmin somebody@somewhere.net
+      when: ansible_distribution|lower == ".*centos.*"
+      register: httpd
+
+    - name: restart httpd (CentoOS)
+      become: true
+      tags: centos, httpd, apache
+      service: 
+        name: httpd
+        state: restarted
+      when: httpd.changed
+
+
+    - name: copy default html file for site
+      become: true
+      tags: centos, httpd, apache
+      copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+    
+    - name: start httpd service
+      become: true
+      tags: centos, httpd, apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      when: ansible_distribution|lower == "centos"
+
 
 - hosts: file_servers
   tasks:
