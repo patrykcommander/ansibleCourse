@@ -10,10 +10,17 @@
     - name: askWhoami-Centos
       become: true
       shell: whoami
-      register: script_return
+      register: script_return1
       when: ansible_distribution|lower is match(".*centos.*") and ansible_distribution_version is match("7.*")
  
     - name: askWhoami-Windows
       win_shell: whoami
-      register:  script_return
+      register:  script_return2
       when: ansible_distribution|lower is match(".*windows.*") 
+
+    - name: command-output
+      debug:
+        msg:
+          - "{{ script_return1 }} "
+          - "{{ script_return2 }}"
+      when: script_return1.changed or script_return2.changed
