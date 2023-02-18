@@ -1,0 +1,39 @@
+---
+
+- hosts: windows
+  tasks:
+
+    - name: create the test user
+      win_user:
+        name: test
+        password: p@ssw0rd
+        state: present
+        groups:
+          - Users
+
+
+    - name: create user profile
+      win_user_profile: 
+        username: test
+        state: present    
+
+
+    - name: create .ssh directory
+      win_file:
+        path: c:/Users/test/.ssh
+        state: directory
+
+
+
+    - name: add the ssh key
+      win_copy:
+        src: ~/.ssh/authorized_keys
+        dest: C:/Users/test/.ssh/authorized_keys
+
+    - name: add user to the Administrators group
+      win_group_membership:
+        name: Administrators
+        members:
+          - test
+        state: present #if the group exists, it will do the update of the group
+

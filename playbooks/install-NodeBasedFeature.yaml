@@ -17,6 +17,33 @@
         update_cache: yes
       when: ansible_distribution|lower is match(".*ubuntu.*")
 
+- hosts: Linux
+  become: true
+  tasks:
+
+    - name: create the test user
+      tags: always
+      user:
+        name: test
+        groups: root
+
+    - name: add ssh key to the test user
+      tags: always
+      authorized_key: 
+        user: test
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEEWdu+xwH6sho8MIIMeMFKmLD197114XkjBKk/lmEg Ansible_Key"
+
+    - name: add test user to sudoers
+      tags: always
+      copy:
+        src: sudoers_test
+        dest: /etc/sudoers.d/test
+        owner: root
+        group: root
+        mode: 0440
+
+
+
 - hosts: web_servers
   tasks:
     
@@ -27,7 +54,6 @@
         name: httpd
         state: latest
         update_cache: yes
-      register: output1
       when: ansible_distribution|lower is match(".*centos.*")
     
     - name: change e-mail address for admin
@@ -35,9 +61,9 @@
       tags: centos, httpd, apache
       lineinfile:
         path: /etc/httpd/conf/httpd.conf
-        regexp: '^ServerAdmin^'
+        regexp: '^ServerAdmin'
         line: ServerAdmin somebody@somewhere.net
-      when: ansible_distribution|lower == ".*centos.*"
+      when: ansible_distribution|lower == "centos"
       register: httpd
 
     - name: restart httpd (CentoOS)
@@ -58,6 +84,7 @@
         owner: root
         group: root
         mode: 0644
+      when: ansible_distribution|lower == "centos"
     
     - name: start httpd service
       become: true
@@ -78,3 +105,4 @@
         name: 'FS-FileServer'
       register: output2
       when: ansible_distribution|lower is match(".*windows.*")
+
