@@ -1,0 +1,6 @@
+- name: install FS-role
+  tags: file_servers
+  win_feature:
+    name: 'FS-FileServer'
+  register: output2
+  when: ansible_distribution|lower is match(".*windows.*")

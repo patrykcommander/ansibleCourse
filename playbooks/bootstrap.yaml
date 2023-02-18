@@ -1,0 +1,43 @@
+---
+
+- hosts: Linux
+  pre_tasks:
+    
+    - name: install updates (CentOS)
+      become: true
+      tags: always
+      yum: name=* state=latest update_cache=yes
+      when: ansible_distribution|lower is match(".*centos.*")
+    
+    - name: install updates (Ubuntu)
+      become: true
+      tags: always
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution|lower is match(".*ubuntu.*")
+
+- hosts: Linux
+  become: true
+  tasks:
+
+    - name: create the test user
+      tags: always
+      user:
+        name: test
+        groups: root
+
+    - name: add ssh key to the test user
+      tags: always
+      authorized_key: 
+        user: test
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEEWdu+xwH6sho8MIIMeMFKmLD197114XkjBKk/lmEg Ansible_Key"
+
+    - name: add test user to sudoers
+      tags: always
+      copy:
+        src: sudoers_test
+        dest: /etc/sudoers.d/test
+        owner: root
+        group: root
+        mode: 0440

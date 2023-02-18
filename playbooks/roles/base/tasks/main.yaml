@@ -1,0 +1,14 @@
+- name: add ssh key (Linux)
+  tags: Linux
+  become: true
+  authorized_key:
+    user: ansible
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEEWdu+xwH6sho8MIIMeMFKmLD197114XkjBKk/lmEg Ansible_Key"
+  when: not (ansible_distribution|lower is match(".*windows.*"))
+
+- name: add ssh key (windows)
+  tags: windows
+  win_copy:
+    src: ~/.ssh/authorized_keys
+    dest: "C:/Users/test/.ssh/authorized_keys"
+  when: ansible_distribution|lower is match(".*windows.*")

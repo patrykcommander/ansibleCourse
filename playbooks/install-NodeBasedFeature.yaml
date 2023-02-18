@@ -1,108 +1,25 @@
 ---
-
-- hosts: all
-  pre_tasks:
-    
-    - name: install updates (CentOS)
-      become: true
-      tags: always
-      yum: name=* state=latest update_cache=yes
-      when: ansible_distribution|lower is match(".*centos.*")
-    
-    - name: install updates (Ubuntu)
-      become: true
-      tags: always
-      apt:
-        upgrade: dist
-        update_cache: yes
-      when: ansible_distribution|lower is match(".*ubuntu.*")
-
 - hosts: Linux
   become: true
-  tasks:
+  roles:
+    - Linux
 
-    - name: create the test user
-      tags: always
-      user:
-        name: test
-        groups: root
 
-    - name: add ssh key to the test user
-      tags: always
-      authorized_key: 
-        user: test
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEEWdu+xwH6sho8MIIMeMFKmLD197114XkjBKk/lmEg Ansible_Key"
+- hosts: windows
+  roles: 
+    - windows
 
-    - name: add test user to sudoers
-      tags: always
-      copy:
-        src: sudoers_test
-        dest: /etc/sudoers.d/test
-        owner: root
-        group: root
-        mode: 0440
 
+- hosts: all
+  roles:
+    - base
 
 
 - hosts: web_servers
-  tasks:
-    
-    - name: install apache (CentOS)
-      tags: centos, httpd, apache
-      become: true
-      yum:
-        name: httpd
-        state: latest
-        update_cache: yes
-      when: ansible_distribution|lower is match(".*centos.*")
-    
-    - name: change e-mail address for admin
-      become: true
-      tags: centos, httpd, apache
-      lineinfile:
-        path: /etc/httpd/conf/httpd.conf
-        regexp: '^ServerAdmin'
-        line: ServerAdmin somebody@somewhere.net
-      when: ansible_distribution|lower == "centos"
-      register: httpd
-
-    - name: restart httpd (CentoOS)
-      become: true
-      tags: centos, httpd, apache
-      service: 
-        name: httpd
-        state: restarted
-      when: httpd.changed
-
-
-    - name: copy default html file for site
-      become: true
-      tags: centos, httpd, apache
-      copy:
-        src: default_site.html
-        dest: /var/www/html/index.html
-        owner: root
-        group: root
-        mode: 0644
-      when: ansible_distribution|lower == "centos"
-    
-    - name: start httpd service
-      become: true
-      tags: centos, httpd, apache
-      service:
-        name: httpd
-        state: started
-        enabled: yes
-      when: ansible_distribution|lower == "centos"
+  roles:
+    - web_servers
 
 
 - hosts: file_servers
-  tasks:
-
-    - name: install FS-role
-      tags: windowsFS
-      win_feature:
-        name: 'FS-FileServer'
-      register: output2
-      when: ansible_distribution|lower is match(".*windows.*")
-
+  roles:
+    - file_servers  

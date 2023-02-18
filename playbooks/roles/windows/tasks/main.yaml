@@ -1,0 +1,31 @@
+- name: create the test user
+  tags: windows
+  win_user:
+    name: test
+    password: p@ssw0rd
+    state: present
+    groups:
+      - Users
+
+
+- name: create user profile
+  tags: windows
+  win_user_profile: 
+    username: test
+    state: present    
+
+
+- name: create .ssh directory
+  tags: windows
+  win_file:
+    path: c:/Users/test/.ssh
+    state: directory
+
+
+- name: add user to the Administrators group
+  tags: windows
+  win_group_membership:
+    name: Administrators
+    members:
+      - test
+    state: present #if the group exists, it will do the update of the group

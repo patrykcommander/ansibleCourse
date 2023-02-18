@@ -1,0 +1,29 @@
+- name: install updates (CentOS)
+  tags: Linux
+  yum: name=* state=latest update_cache=yes
+  when: ansible_distribution|lower is match(".*centos.*")
+  
+
+- name: install updates (Ubuntu)
+  tags: Linux
+  apt:
+    upgrade: dist
+    update_cache: yes
+  when: ansible_distribution|lower is match(".*ubuntu.*")
+
+
+- name: create the test user
+  tags: Linux
+  user:
+    name: test
+    groups: root
+
+
+- name: add test user to sudoers
+  tags: Linux
+  copy:
+    src: sudoers_test
+    dest: /etc/sudoers.d/test
+    owner: root
+    group: root
+    mode: 0440
