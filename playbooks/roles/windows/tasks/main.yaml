@@ -29,3 +29,14 @@
     members:
       - test
     state: present #if the group exists, it will do the update of the group
+
+
+- name: whoami-command 
+  win_shell: whoami 
+  register: output 
+
+
+- name: output-whoami 
+  debug: 
+    msg: 
+      - "{{ output }}"

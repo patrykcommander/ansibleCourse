@@ -13,17 +13,9 @@
   lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: '^ServerAdmin'
-    line: ServerAdmin somebody@somewhere.net
+    line: ServerAdmin somebody@somewhere.com
   when: ansible_distribution|lower == "centos"
-  register: httpd
-
-- name: restart httpd (CentoOS)
-  become: true
-  tags: centos, httpd, apache
-  service: 
-    name: httpd
-    state: restarted
-  when: httpd.changed
+  notify: restart_apache
 
 
 - name: copy default html file for site
